@@ -1,0 +1,83 @@
+<div class="contenedor">
+  <form [formGroup]="formHistoriaClinica" (ngSubmit)="cargarHistoria()">
+    <h1>Completar historia clinica</h1>
+    <div>
+      <label for="altura" class="label">Altura:</label><br>
+      <input type="number" class="input" id="altura" placeholder="Ingrese Altura" formControlName="altura" step=".01">
+      <small class="invalid"
+        *ngIf="formHistoriaClinica.controls['altura'].errors?.['required'] && formHistoriaClinica.controls['altura'].touched"><br>
+        La altura es requerida
+      </small>
+    </div>
+    <div>
+      <label for="temperatura" class="label">Temperatura:</label><br>
+      <input type="number" class="input" id="temperatura" placeholder="Ingrese Temperatura" step=".01"
+        formControlName="temperatura">
+      <small class="invalid"
+        *ngIf="formHistoriaClinica.controls['temperatura'].errors?.['required'] && formHistoriaClinica.controls['temperatura'].touched"><br>
+        La temperatura es requerida
+      </small>
+    </div>
+    <div>
+      <label for="peso" class="label">Peso:</label><br>
+      <input type="number" class="input" id="peso" placeholder="Ingrese Peso" formControlName="peso" step=".01">
+      <small class="invalid"
+        *ngIf="formHistoriaClinica.controls['peso'].errors?.['required'] && formHistoriaClinica.controls['peso'].touched"><br>
+        El peso es requerido
+      </small>
+    </div>
+    <div>
+      <label for="presion" class="label">Presion</label><br>
+      <input type="number" class="input" id="presion" placeholder="Ingrese Presion" step=".01"
+        formControlName="presion">
+      <small class="invalid"
+        *ngIf="formHistoriaClinica.controls['presion'].errors?.['required'] && formHistoriaClinica.controls['presion'].touched"><br>
+        La presion es requerida
+      </small>
+    </div><br>
+    <div class="group">
+      <label for="presion" class="label">Ingrese datos y valores que quiera:</label><br>
+      <label>Dato: </label><input type="text" class="input" id="dato1" placeholder="Dato 1" [(ngModel)]="datoDinamico1"
+        [ngModelOptions]="{standalone: true}">
+      <label>Valor: </label><input type="text" class="input" id="valor1" placeholder="Valor 1"
+        [(ngModel)]="valorDinamico1" [ngModelOptions]="{standalone: true}"><br>
+      <label>Dato: </label><input type="text" class="input" id="dato2" placeholder="Dato 2" [(ngModel)]="datoDinamico2"
+        [ngModelOptions]="{standalone: true}">
+      <label>Valor: </label><input type="text" class="input" id="valor2" placeholder="Valor 2"
+        [(ngModel)]="valorDinamico2" [ngModelOptions]="{standalone: true}"><br>
+      <label>Dato: </label><input type="text" class="input" id="dato3" placeholder="Dato 3" [(ngModel)]="datoDinamico3"
+        [ngModelOptions]="{standalone: true}">
+      <label>Valor: </label><input type="text" class="input" id="valor3" placeholder="Valor 3"
+        [(ngModel)]="valorDinamico3" [ngModelOptions]="{standalone: true}"><br>
+      <label>Dato: </label><input type="text" class="input" id="dato4" placeholder="Dato 4" [(ngModel)]="datoDinamico4"
+        [ngModelOptions]="{standalone: true}">
+      <label>Valor: </label><input type="range" list="tickmarks" class="input" id="valor4" placeholder="Valor 4"
+        [(ngModel)]="valorDinamico4" [ngModelOptions]="{standalone: true}"><br>
+      <label>Dato: </label><input type="text" class="input" id="dato5" placeholder="Dato 5" [(ngModel)]="datoDinamico5"
+        [ngModelOptions]="{standalone: true}">
+      <label>Valor: </label><input type="number" class="input" id="valor5" placeholder="Valor 5"
+        [(ngModel)]="valorDinamico5" [ngModelOptions]="{standalone: true}"><br>
+      <label>Dato: </label><input type="text" class="input" id="dato6" placeholder="Dato 6" [(ngModel)]="datoDinamico6"
+        [ngModelOptions]="{standalone: true}">
+      <label>Valor: </label>
+        <!-- Checkbox -->
+        <input type="checkbox" name="switch-button" id="switch-label" class="switch-button__checkbox">
+        <!-- Botón -->
+        <label for="switch-label" class="switch-button__label"></label>
+       
+      <br>
+      <datalist id="tickmarks">
+        <option value="0" label="0%">
+        <option value="50" label="50%">
+        <option value="100" label="100%">
+      </datalist>
+    </div>
+    <div class="group">
+      <input type="submit" class="btnAgregar" value="Agregar" [disabled]="formHistoriaClinica.invalid">
+    </div>
+  </form>
+  <div *ngIf="mostrarError" class="errorComentario">
+    <label>Debe ingresar los 3 datos</label><br>
+    <button (click)="cerrarError()" class="botonOk">Ok</button>
+  </div>
+</div>

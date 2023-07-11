@@ -1,0 +1,35 @@
+<div class="container py-3 contenedor">
+    <header>
+        <div class="d-flex flex-column flex-md-row align-items-center pb-3 mb-4 border-bottom">
+            <h1>Gestionar especialistas</h1>
+        </div>
+
+        <button (click)="descargarExcel()">Descargar excel con la lista de usuarios</button>
+
+        <div class="pricing-header p-3 pb-md-4 mx-auto text-center">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th scope="col">Nombre</th>
+                        <th scope="col">Apellido </th>
+                        <th scope="col">Rol</th>
+                        <th scope="col">Habilitar/Deshabilistar</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <ng-container *ngFor="let user of users$ | async">
+                        <tr class="table-primary">
+                            <th scope="row">{{user.nombre}}</th>
+                            <td>{{user.apellido}}</td>
+                            <td>{{user.role}}</td>
+                            <button *ngIf="user.role==='especialista' && user.emailVerificado===false" type="button" class="w-100 btn btn-lg btnHabilitar" (click)="habilitarEspecialista(user)" >Habilitar</button>
+                            <button *ngIf="user.role==='especialista' && user.emailVerificado===true" type="button" class="w-100 btn btn-lg btnDeshabilitar" (click)="deshabilitarEspecialista(user)" >Deshabilitar</button>
+                            <td *ngIf="user.role!='especialista'"></td>
+                        </tr>
+                    </ng-container>
+                </tbody>
+            </table>
+
+        </div>
+    </header>
+</div>

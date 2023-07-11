@@ -3,16 +3,21 @@
         <div class="card">
             <div class="card-body">
                 <h1 class="text-center">Registrarse</h1>
-                <form [formGroup]="registerForm" (ngSubmit)="registrarUsuario()">
-                    <div class="form-group">
-                        <p>
-                            Seleccionar tipo de usuario:
-                            <select [(ngModel)]="tipoUsuario" name="tipoUsuario" formControlName="tipoUsuario">
-                                <option>paciente</option>
-                                <option>especialista</option>
-                            </select>
-                        </p>
+                <div class="imagenContainer">
+                    <div class='d-md-flex flex-md-equal'>
+                        <div (click)="setEspecialista()">
+                            <label>Especialista</label><br>
+                            <img src="../../../assets/registro_especialistas.png">
+                        </div>
+                        <div (click)="setPaciente()">
+                            <label>Paciente</label><br>
+                            <img src="../../../assets/registro_paciente.png">
+                        </div>
                     </div>
+                </div>
+
+                <form *ngIf="tipoUsuario==='paciente'" [formGroup]="registerFormPaciente"
+                    (ngSubmit)="registrarPaciente()">
                     <div class="form-group">
                         <label for="nombre">Nombre</label>
                         <input type="nombre" class="form-control" formControlName="nombre">
@@ -26,29 +31,25 @@
                         <input type="email" class="form-control" formControlName="email">
                     </div>
                     <div class="form-group">
-                        <label for="fechaNacimiento">Fecha de nacimiento</label>
-                        <input type="fechaNacimiento" class="form-control" formControlName="fechaNacimiento">
+                        <label for="fechaNacimiento">Fecha de nacimiento: </label>
+                        <input type="date" formControlName="fechaNacimiento">
                     </div>
                     <div class="form-group">
                         <label for="dni">DNI</label>
                         <input type="dni" class="form-control" formControlName="dni">
                     </div>
-                    <div *ngIf="this.tipoUsuario==='paciente'">
+                    <div>
+                        <label for="obraSocial">Ingrese su obra social</label>
+                        <input class="form-control" formControlName="obraSocial">
+                    </div>
+                    <div>
                         <label>Subir 2 fotos para el perfil:</label>
                         <div>
                             <input type="file" (change)="changeImgPaciente1($event)">
                         </div>
                         <div>
                             <input type="file" (change)="changeImgPaciente2($event)">
-                        </div><br>
-                        <div>
-                            <label for="obraSocial">Ingrese su obra social</label>
-                            <input class="form-control" formControlName="obraSocial">
                         </div>
-                    </div>
-                    <div *ngIf="tipoUsuario=='especialista'">
-                        <label>Subir 1 foto:</label>
-                        <input type="file" (change)="changeImgEspecialista($event)">
                     </div>
                     <div class="form-group">
                         <label for="password">Contraseña</label>
@@ -57,11 +58,66 @@
                     </div>
                     <div class="form-group">
                         <label position="floating">Repetir Contraseña</label>
-                        <input type="password" formControlName="password2" class="form-control" placeholder="Mínimo 6 caracteres">
+                        <input type="password" formControlName="password2" class="form-control"
+                            placeholder="Mínimo 6 caracteres">
                     </div>
                     <br>
                     <div class="d-grid gap-2">
-                        <button [disabled]="!registerForm.valid" class="btn btn-dark btn-lg">Registrarse</button>
+                        <button [disabled]="!registerFormPaciente.valid"
+                            class="btn btn-dark btn-lg">Registrarse</button>
+                    </div>
+                </form>
+
+                <form *ngIf="tipoUsuario==='especialista'" [formGroup]="registerFormEspecialista"
+                    (ngSubmit)="registrarEspecialista()">
+                    <div class="form-group">
+                        <label for="nombre">Nombre</label>
+                        <input type="nombre" class="form-control" formControlName="nombreEspecialista">
+                    </div>
+                    <div class="form-group">
+                        <label for="apellido">Apellido</label>
+                        <input type="apellido" class="form-control" formControlName="apellidoEspecialista">
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" class="form-control" formControlName="emailEspecialista">
+                    </div>
+                    <div class="form-group">
+                        <label for="fechaNacimiento">Fecha de nacimiento: </label>
+                        <input type="date" formControlName="fechaNacimientoEspecialista">
+                    </div>
+                    <div class="form-group">
+                        <label for="dni">DNI</label>
+                        <input type="dni" class="form-control" formControlName="dniEspecialista">
+                    </div>
+                    <div class="form-group">
+                        <label for="dni">Seleccione sus especialidades</label><br>
+                        <button type="button" *ngFor="let item of listaEspecialidades" (click)="agregarEspecialidad(item)">{{item}}</button>
+                        <br><br>
+                        <label >Especialidades seleccionadas:</label><br>
+                        <div *ngFor="let especialidad of especialidades">
+                            <label>{{especialidad}}</label><br>
+                        </div>
+                    </div>
+                    <br>
+                    <div>
+                        <label>Subir 1 foto:</label>
+                        <input type="file" (change)="changeImgEspecialista($event)">
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Contraseña</label>
+                        <input type="password" class="form-control" placeholder="Mínimo 6 caracteres"
+                            formControlName="passwordEspecialista">
+                    </div>
+                    <div class="form-group">
+                        <label position="floating">Repetir Contraseña</label>
+                        <input type="password" formControlName="password2Especialista" class="form-control"
+                            placeholder="Mínimo 6 caracteres">
+                    </div>
+                    <br>
+                    <div class="d-grid gap-2">
+                        <button type="submit" [disabled]="!registerFormEspecialista.valid"
+                            class="btn btn-dark btn-lg">Registrarse</button>
                     </div>
                 </form>
             </div>

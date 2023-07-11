@@ -1,7 +1,7 @@
 <nav id="nav" class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container-fluid">
+        <img src="../../favicon.ico" width="50" height="50" class="d-inline-block align-text-top">
         <a class="navbar-brand" href="#">
-            <img src="../../favicon.ico" width="30" height="30" class="d-inline-block align-text-top">
             Tp Clinica
         </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
@@ -11,23 +11,51 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item">
-                    <a class="nav-link" aria-current="page" routerLink="/bienvenidos">Home</a>
+                    <a class="nav-link" aria-current="page" routerLink="/bienvenidos">{{bienvenidos}}</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" aria-current="page" *ngIf="esAdmin" routerLink="/usuarios">{{gestionUsuarios}}</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" aria-current="page" *ngIf="esAdmin" routerLink="/graficos">{{estadisticas}}</a>
+                </li>
+                <li class="nav-item dropdown" *ngIf="estaLogeado">
+                    <a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-bs-toggle="dropdown"
+                        aria-expanded="false">
+                        {{turnos}}
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <li><a class="dropdown-item" *ngIf="!esAdmin" (click)="navergar('turnos/mis-turnos')">navegar a turnos/mis-turnos</a></li>
+                        <li><a class="dropdown-item" (click)="navergar('turnos/perfil-turno')">{{perfil}}</a></li>
+                        <li><a class="dropdown-item" (click)="navergar('turnos/solicitar-turno')">{{solicitarTurno}}</a>
+                        </li>
+                        <li><a class="dropdown-item" *ngIf="esAdmin" (click)="navergar('turnos/turnos-admin')">{{turnosAdmin}}</a></li>
+                    </ul>
                 </li>
             </ul>
             <ul class="navbar-nav">
                 <li class="nav-item">
-                    <a class="nav-link" *ngIf="estaLogeado">Hola {{ userLogged }}!!</a>
+                    <a class="nav-link" *ngIf="estaLogeado">{{hola}}{{ userLogged }}!!</a>
                 </li>
                 <li>
-                    <a routerLink="login" class="nav-link" *ngIf="!estaLogeado">Iniciar
-                        sesion</a>
+                    <a routerLink="login" class="nav-link" *ngIf="!estaLogeado">{{iniciarSesion}}</a>
                 </li>
                 <li>
-                    <a routerLink="registro" class="nav-link" *ngIf="!estaLogeado">Registrarse</a>
+                    <a routerLink="registro" class="nav-link" *ngIf="!estaLogeado">{{registrarse}}</a>
                 </li>
-
-                <li><a class="nav-link active" type="button" *ngIf="estaLogeado" (click)="logOut()">Cerrar
-                        sesion</a></li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-bs-toggle="dropdown"
+                        aria-expanded="false">
+                        {{idiomaParaMostrar}}
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <li><a class="dropdown-item" (click)="cambiarIdioma('esp')">Español</a></li>
+                        <li><a class="dropdown-item" (click)="cambiarIdioma('por')">Portugues</a></li>
+                        <li><a class="dropdown-item" (click)="cambiarIdioma('ing')">English</a>
+                        </li>
+                    </ul>
+                </li>
+                <li><a class="nav-link active" type="button" *ngIf="estaLogeado" (click)="logOut()">{{cerrarSesion}}</a></li>
             </ul>
         </div>
     </div>

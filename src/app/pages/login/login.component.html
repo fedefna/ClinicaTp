@@ -1,1 +1,31 @@
-<p>login works!</p>
+<div id="background" class="position-relative overflow-hidden">
+    <div class="col-md-6 mx-auto mt-5">
+        <div class="card">
+            <div class="card-body">
+                <h1 class="text-center">{{iniciarSesion}}</h1>
+                <form>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" value={{emailIngreso}} #email class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label >Password</label>
+                        <input type="password" value={{contraIngreso}} #password class="form-control">
+                    </div>
+                    <br>
+                    <div *ngIf="captchaUtilidades" class="captcha">
+                        <app-captcha class="appCaptcha" (resultadoCaptcha)="verificarResultadoCaptcha($event)"></app-captcha>
+                        <label class="invalid" *ngIf="errorCaptcha">{{errorCaptchaTraducido}}</label>
+                      </div>
+                    <br>
+                    <div class="d-grid gap-2">
+                        <button (click)="OnSignIn(email.value, password.value)"
+                            class="btn btn-dark btn-lg">{{ingresar}}</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<mat-fab-menu (onFabMenuItemSelected)="fabButonSeleccionado($event)" id="add-button" maxImageSize="56dp" color="primary" [fabButtons]="fabButtonsRandom" direction="top">
+</mat-fab-menu>

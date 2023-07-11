@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/compat/firestore';
 import { AngularFireStorage } from '@angular/fire/compat/storage';
-import { finalize, Observable } from 'rxjs';
-import { User } from '../Clases/user';
+import { finalize, map, Observable, take } from 'rxjs';
+import { Especialidades, User } from '../Clases/user';
 import { AuthService } from './auth.service';
-import { FotosService } from './fotos.service';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
+import { Hora } from '../Clases/hora';
 
 
 @Injectable({
@@ -13,41 +13,25 @@ import { AngularFireAuth } from '@angular/fire/compat/auth';
 })
 export class UsuariosService {
 
-  private dbpathUsuarios = '/usuarios'; 
-  // private dbpathPacientes = '/pacientes'; 
-  // private dbpathEspecialistas = '/Especialistas';
+  private dbpathUsuarios = '/usuarios';
   usuariosRef: AngularFirestoreCollection<User>;
-  usuarios: Observable<any[]>;
+  usuarios$: Observable<any[]>;
+  especialidad?: Especialidades;
+  imageneEspecialista?: string;
+  usuariosPorEspecialidad: User[] = [];
   id?: string;
   role?: string;
-  usuarioSeleccionado: any;
-  usuario?:User;
-  // usuariosRefPacientes: AngularFirestoreCollection<any>;
-  // usuariosPacientes: Observable<any[]>;
-  // usuariosRefEspecialistas: AngularFirestoreCollection<any>;
-  // usuariosEspecialistas: Observable<any[]>;
+  public usuarioSeleccionado: User = new User();
+  usuario?: User;
 
   constructor(private db: AngularFirestore,
     private storage: AngularFireStorage,
-    public firebaseAuth: AngularFireAuth) {
-    this.usuariosRef = db.collection<any>(this.dbpathUsuarios, ref => ref.orderBy('apellido'));
-    this.usuarios = this.usuariosRef.valueChanges(this.dbpathUsuarios);
+    public firebaseAuth: AuthService) {
 
-    // this.usuariosRefPacientes = db.collection<any>(this.dbpathPacientes, ref => ref.where('role', '==', 'cliente').orderBy('apellido'));
-    // this.usuariosPacientes = this.usuariosRefPacientes.valueChanges(this.dbpathPacientes);
-
-    // this.usuariosRefEspecialistas = db.collection<any>(this.dbpathEspecialistas, ref => ref.where('role', '==', 'empleado').orderBy('apellido'));
-    // this.usuariosEspecialistas = this.usuariosRefEspecialistas.valueChanges(this.dbpathEspecialistas);
-
+    this.usuariosRef = db.collection<User>(this.dbpathUsuarios, ref => ref.orderBy('apellido'));
+    this.usuarios$ = this.usuariosRef.valueChanges(this.dbpathUsuarios);
+    console.log('asd')
   }
-
-  // getAllPacientes() {
-  //   return this.usuariosPacientes;
-  // }
-
-  // getAllEspecialistas() {
-  //   return this.usuariosEspecialistas;
-  // }
 
   async obtenerID(email: string) {
     await this.db.collection('/usuarios').ref.where('email', '==', email).get().then((responce) => {
@@ -56,30 +40,53 @@ export class UsuariosService {
   }
 
   async obtenerRole(email: string) {
-    await this.db.collection('/usuarios').ref.where('email', '==', email).get().then((responce:any) => {
+    await this.db.collection('/usuarios').ref.where('email', '==', email).get().then((responce: any) => {
       this.role = responce.docs[0].data()['role'];
     });
   }
 
   async obtenerUsuario(email: string) {
-    await this.db.collection('/usuarios').ref.where('email', '==', email).get().then((responce) => {
+    await this.db.collection('/usuarios').ref.where('email', '==', email).get().then((responce: any) => {
       if (responce.docs.length === 0) {
         console.log('No hay usuario registrado con ese email: ', email);
       } else {
+        console.log('Obtener usuario: ', responce.docs[0].data());
         this.usuarioSeleccionado = responce.docs[0].data();
+        this.role = responce.docs[0].data()['role'];
         this.id = responce.docs[0].id;
       }
     });
   }
 
-
-  getAll() {
-    return this.usuarios;
+  obtenerUsuariosSegunEspecialidad(array: User[] = [],especialidad: string) {
+    this.usuarios$.pipe(take(1)).subscribe(list => {
+      list.forEach(user => {
+        if (user.especialidades) {
+          user.especialidades.forEach((espec: string) => {
+            console.log('user: ', user.nombre,'especialidad: ',especialidad,' a comparar con: ',espec);
+            if (espec === especialidad) {
+              array.push(user)
+            }
+          });
+        }
+      });
+      console.log(array);
+    });
   }
 
-  nuevoUsuarioEspecialista(usuario: User, foto: File) {
+
+  getAll() {
+    return this.usuarios$;
+  }
+
+  nuevoUsuarioEspecialista(usuario: any, foto: File) {
     usuario.id = this.db.createId();
-    usuario.emailVerificado=false;
+    usuario.emailVerificado = false;
+    let horarios = this.crearHorario()
+    let horarioMap = horarios.map((obj) => { return Object.assign({}, obj) });
+
+    console.log("horariosMap " + horarioMap);
+    usuario.horariosMap = horarioMap;
 
     const pathRef = `fotos/${usuario.id}_1`;
     const fileRef = this.storage.ref(pathRef);
@@ -87,7 +94,7 @@ export class UsuariosService {
     task.snapshotChanges().pipe(
       finalize(() => {
         fileRef.getDownloadURL().subscribe(async res => {
-          usuario.imageneEspecialista = res;
+          usuario.imagenEspecialista = res;
           this.db.collection('usuarios').doc(usuario.id).set(usuario);
         });
       })
@@ -95,9 +102,54 @@ export class UsuariosService {
 
   }
 
+  crearHorario() {
+    let horas: any[] = [];
+    horas.push(new Hora('08:00'));
+    horas.push(new Hora('08:30'));
+    horas.push(new Hora('09:00'));
+    horas.push(new Hora('09:30'));
+    horas.push(new Hora('10:00'));
+    horas.push(new Hora('10:30'));
+    horas.push(new Hora('11:00'));
+    horas.push(new Hora('11:30'));
+    horas.push(new Hora('12:00'));
+    horas.push(new Hora('12:30'));
+    horas.push(new Hora('13:00'));
+    horas.push(new Hora('13:30'));
+    horas.push(new Hora('14:00'));
+    horas.push(new Hora('14:30'));
+    horas.push(new Hora('15:00'));
+    horas.push(new Hora('15:30'));
+    horas.push(new Hora('16:00'));
+    horas.push(new Hora('16:30'));
+    horas.push(new Hora('17:00'));
+    horas.push(new Hora('17:30'));
+    horas.push(new Hora('18:00'));
+    horas.push(new Hora('18:30'));
+    console.log("Horas " + horas);
+    return horas;
+  }
+
+  nuevoUsuarioAdmin(usuario: User, foto: File) {
+    usuario.id = this.db.createId();
+    usuario.emailVerificado = false;
+
+    const pathRef = `fotos/${usuario.id}_1`;
+    const fileRef = this.storage.ref(pathRef);
+    const task = this.storage.upload(pathRef, foto);
+    task.snapshotChanges().pipe(
+      finalize(() => {
+        fileRef.getDownloadURL().subscribe(async res => {
+          usuario.imagenEspecialista = res;
+          this.db.collection('usuarios').doc(usuario.id).set(usuario);
+        });
+      })
+    ).subscribe();
+  }
+
   nuevoUsuarioPaciente(usuario: User, foto1: File, foto2: File) {
     usuario.id = this.db.createId();
-    usuario.emailVerificado=false;
+    usuario.emailVerificado = false;
 
     const pathRef1 = `fotos/${usuario.id}_1`;
     const pathRef2 = `fotos/${usuario.id}_2`;
@@ -120,8 +172,8 @@ export class UsuariosService {
         });
       })
     ).subscribe();
-    this.usuario=usuario;
-    console.log(this.usuario);
+    this.usuario = usuario;
+    console.log("Este es el thi.usuario del servicio usuarios: " + this.usuario);
   }
 
   guardarCambios(usuario: User) {
@@ -138,6 +190,20 @@ export class UsuariosService {
 
   crearId() {
     return this.db.createId();
+  }
+
+  async traerEspecialidades() {
+    await this.db.collection('/especialidades').ref.get().then((responce: any) => {
+      return responce.docs[0].data();
+    });
+  }
+
+  agregarLogIngreso(coleccion:string,datos:any){
+    this.db.collection(coleccion).add(datos);
+  }
+
+  traerLogs(nombreIdField:string){
+    return this.db.collection('LogIngresos').valueChanges({ idField: nombreIdField });
   }
 
 }

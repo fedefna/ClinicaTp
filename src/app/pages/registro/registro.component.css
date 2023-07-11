@@ -1,0 +1,9 @@
+.imagenContainer{
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: center;
+}
+  
+img{
+    height: 180px;
+}

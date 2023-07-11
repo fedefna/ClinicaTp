@@ -1,0 +1,34 @@
+<div id="background" class="form-group">
+    <div class="contenedor">
+        <h1 for="dni">Seleccione una especialidad: </h1><br>
+        <button class="iconos contenedor" type="button" *ngFor="let item of listaEspecialidades"
+            (click)="seleccionarEspecialidad(item)">{{item}}</button>
+    </div>
+    <br><br>
+    <div class="contenedor" *ngIf="especialidadSeleccionada!='' || listaEspecialistas.length>0">
+        <h2 *ngIf="especialidadSeleccionada!=''">Especialidad seleccionada:</h2><br>
+        <label>{{especialidadSeleccionada}}</label><br>
+        <h2 *ngIf="listaEspecialistas.length>0">Seleccione un especialista:</h2><br>
+        <div class="divEspecialistas">
+            <div class="iconos contenedor" *ngFor="let especialista of listaEspecialistas">
+                <div><label>{{especialista.nombre}},
+                        {{especialista.apellido}}</label></div>
+                <button class="buttonEspecialista" (click)="mostrarTurnosPosibles(especialista)"><img
+                        src="{{especialista.imagenEspecialista}}"></button>
+            </div>
+        </div><br>
+    </div>
+    <br><br>
+    <div *ngIf="especialistaSeleccionado.role" class="contenedor">
+        <div class="captcha">
+            <app-captcha class="appCaptcha" (resultadoCaptcha)="verificarResultadoCaptcha($event)"></app-captcha>
+            <label class="invalid" *ngIf="errorCaptcha">Debe realizar el captcha</label>
+          </div>
+    </div>
+    <br><br>
+    <div *ngIf="captchaOkay" class="contenedor">
+        <h2>Seleccione uno de los turnos disponibles:</h2><br>
+        <button class="iconos contenedor" *ngFor="let turno of turnosPosibles" (click)="crearTurno(turno)">{{turno.fecha}},
+            {{turno.hora}}</button>
+    </div>
+</div>

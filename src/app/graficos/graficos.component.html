@@ -1,0 +1,55 @@
+<body>
+    <div class="contenedorBotonPDF">
+        <h2 class="titulo">Descargas:</h2>
+        <a>
+            Estadisticas en formato pdf:
+            <img src="assets/pdfIcon.png" class="iconos" (click)="descargarPDFEstadisticas()">
+        </a><br>
+        <a>
+            Log de ingresos en formato excel:
+            <img src="assets/excelIcon.png" class="iconos" (click)="descargarExcelLogeos()">
+        </a>
+    </div>
+    <div class="contenedorCantEspecialidades" >
+        <h2 class="titulo">Turnos pedidos por cada especialidad</h2>
+        <div appColorRandom *ngFor="let especialidad of listaEspecialidades" class="especialidadesCirculos" >
+            <label class="textoEspecialista">{{especialidad.nombre}}</label><br>
+            <label class="textoNumero">{{especialidad.cantidadTurnos}} Turnos</label>
+        </div>
+    </div>
+    <div  id="divChart" class="contenedorGraficos">
+        <h2 class="titulo">Turnos finalizados y solicitados durante la ultima semana</h2>
+        <canvas id="turnosChart" ></canvas>
+    </div>
+    <div class="contenedorCantDia">
+        <h2 class="titulo">Turnos por Día</h2>
+        <div appColorRandom class="especialidadesCirculos" >
+            <label class="textoNumeroDia">{{turnosPorDia}} x Día</label>
+        </div>
+    </div>
+    <div class="contenedorLogeos">
+        <h2 class="titulo">Registro de Logeos</h2>
+        <table class="tablaLogeos">
+            <thead class="tablaHead">
+                <tr>
+                    <th>Usuario</th>
+                    <th>Email</th>
+                    <th>Dia</th>
+                    <th>Hora</th>
+                    <th>Tipo de usuario</th>
+                </tr>
+            </thead>
+     
+            <tbody class="tCuerpo" *ngFor="let logeo of listaLogeos" >
+                <tr [appColorPorUsuario]="logeo.tipoUsuario">
+                    <td appTipoDeLetra>{{logeo.usuario | titlecase}}</td>
+                    <td>{{logeo.email | lowercase}}</td>
+                    <td>{{logeo.fecha | date:'dd/MM/YY'}}</td>
+                    <td >{{logeo.horario}}</td>
+                    <td >{{logeo.tipoUsuario | uppercase}}</td>
+                </tr>  
+            </tbody>
+        </table>
+    </div>
+</body>
+

@@ -19,6 +19,7 @@ export class AuthService {
     this.user = this.firebaseAuth.authState.pipe(
       switchMap((user) => {
         if (user) {
+          console.log("Constructor del auth atento a los cambios supuestamente");
           console.log(this.afs.doc<User>(`users/${user.uid}`).valueChanges());
           return this.afs.doc<User>(`users/${user.uid}`).valueChanges();
         }
@@ -72,8 +73,8 @@ export class AuthService {
 
   }
 
-  LogOut() {
-    this.firebaseAuth.signOut();
+  async LogOut() {
+    await this.firebaseAuth.signOut();
     localStorage.removeItem('user');
     localStorage.removeItem('role');
     localStorage.removeItem('usuario');
@@ -87,5 +88,25 @@ export class AuthService {
 
   getAuth() {
     return this.firebaseAuth.currentUser;
+  }
+
+  public getAuthState() {
+    return this.firebaseAuth.authState;
+  }
+
+  public async verificarPerfilAdmin(): Promise<boolean> {
+    const user = JSON.parse(localStorage.getItem('user') || '{}');
+    if (user && user.uid) {
+      const userDoc = await this.afs.doc<User>(`users/${user.uid}`).get().toPromise();
+      const userData = userDoc?.data();
+      if (userData && userData.role) {
+        const role = userData.role;
+        console.log('verificarPerfilAdmin.userData.role: ',userData.role)
+        if (role === 'admin') {
+          return true;
+        }
+      }
+    }
+    return false;
   }
 }

@@ -1,0 +1,82 @@
+<div id="background">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-3 contenedor">
+                <span class="font">Hola {{nombre}} {{apellido}}!!</span><br>
+                <div class="imagenContainer">
+                    <div *ngIf="tipoUsuario==='paciente'" class='d-md-flex flex-md-equal'>
+                        <div>
+                            <img src="{{imagenesPaciente1}}">
+                        </div>
+                        <div>
+                            <img src="{{imagenesPaciente2}}">
+                        </div>
+                    </div>
+                    <div *ngIf="tipoUsuario==='especialista'" class='d-md-flex flex-md-equal'>
+                        <div>
+                            <img src="{{imagenEspecialista}}">
+                        </div>
+                    </div>
+                    <span class="font">Nombre: {{nombre}}</span><br>
+                    <span class="font">Apellido: {{apellido}}</span><br>
+                    <span class="font">Dni: {{dni}}</span><br>
+                    <span class="font">Fecha de nacimiento: {{fechaNaciemiento}}</span><br>
+                    <span class="font" *ngIf="tipoUsuario==='paciente'">Obra social: {{obraSocial}}</span><br>
+                    <span class="font" *ngIf="tipoUsuario==='especialista'">Especialidad/es:
+                        {{especialidades}}</span><br>
+
+                </div>
+            </div>
+
+            <div class="col-sm-6 contenedor" *ngIf="tipoUsuario==='especialista'">
+
+                <div>
+                    <h1 class="font">Mis horarios:</h1><br>
+                </div>
+                <div>
+                    <button *ngIf="flagEditar" (click)="guardarCambios()">Guardar cambios</button>
+                    <button *ngIf="!flagEditar" (click)="editarHorarios()">Editar horarios</button>
+                </div>
+                <br>
+                <div *ngIf="flagEditar">
+                    <div>
+                        <label>Seleccione una opcion:</label><br>
+                        <button *ngFor="let especialidad of especialidades"
+                            (click)=seleccionarEspecialidad(especialidad)>{{especialidad}}</button>
+                    </div>
+                    <button (click)="seleccionarEspecialidad('Libre')">Libre</button>
+                    <br>
+                    <br>
+                    <label>Opcion seleccionada: {{especialidadSeleccionada}}.</label>
+                    <label>Haga click en la celda que desee modificar.</label>
+                </div>
+                <div>
+                    <table class="table table-hover">
+                        <thead class="thead-dark">
+                            <tr>
+                                <th scope="col">Hora</th>
+                                <th scope="col">Lunes</th>
+                                <th scope="col">Martes</th>
+                                <th scope="col">Miercoles</th>
+                                <th scope="col">Jueves</th>
+                                <th scope="col">Viernes</th>
+                                <th scope="col">Sabado</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let hora of horario">
+                                <th scope="row">{{hora.hora}}hs</th>
+                                <td (click)="cambiarHorario('lunes',hora)">{{hora.lunes}}</td>
+                                <td (click)="cambiarHorario('martes',hora)">{{hora.martes}}</td>
+                                <td (click)="cambiarHorario('miercoles',hora)">{{hora.miercoles}}</td>
+                                <td (click)="cambiarHorario('jueves',hora)">{{hora.jueves}}</td>
+                                <td (click)="cambiarHorario('viernes',hora)">{{hora.viernes}}</td>
+                                <td (click)="cambiarHorario('sabado',hora)">{{hora.sabado}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

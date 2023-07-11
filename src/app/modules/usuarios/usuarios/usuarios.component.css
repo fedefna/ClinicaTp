@@ -1,0 +1,47 @@
+.fede {
+    display: flex;
+    flex-direction: row;
+    background-color: grey;
+    margin: 2px;
+}
+
+.fede2 {
+    align-items: center;
+    justify-content: center;
+    margin: 10px;
+    border: 1px solid #00F7F4;
+    border-radius: 20px;
+    width: 320px;
+}
+
+.jugada {
+    display: flex;
+    flex-direction: row;
+    /*CON ALIGN Y JUSTIFY SIEMPRE ALINEARA LOS ELEMENTOS HIJOS AL CENTRO EN X Y Y*/
+    align-items: center;
+    justify-content: center;
+    margin: 10px;
+    border: 1px solid #00F7F4;
+    border-radius: 20px;
+    width: 320px;
+}
+#background{
+    width: 100%;
+    height: 95vh;
+    background-image: url('src\assets\background.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+}
+
+.contenedor{
+    background-color: rgba(255, 255, 255, 0.616);
+    height: auto;
+    top:5px;
+    right: 15px;
+    position: relative;
+    border-color: rgb(56, 62, 68);
+    border-width: 5px;
+    border-style: solid;
+    border-radius: 10px;
+}

@@ -1,0 +1,32 @@
+.imagenContainer {
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: center;
+}
+
+img {
+    height: 150px;
+}
+
+
+#add-button {
+
+    left: 20px;
+    bottom: 10px;
+    left: auto;
+    position: absolute;
+}
+
+.captcha {
+    margin-bottom: 5%;
+    /* display:flex; */
+    /* align-items: center; */
+    align-content: center;
+    /* justify-content: space-between; */
+    /* align-self: center; */
+    /* text-align: center; */
+}
+
+appCaptcha{
+    justify-content: space-between;
+}

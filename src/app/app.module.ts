@@ -10,9 +10,21 @@ import { NavBarComponent } from './componentes/nav-bar/nav-bar.component';
 import { AngularFireModule } from '@angular/fire/compat';
 import { AngularFireAuthModule } from '@angular/fire/compat/auth';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { environment } from 'src/environments/environment';
 import { VerificacionRegistroComponent } from './pages/verificacion-registro/verificacion-registro.component';
+import { environment } from 'src/environments/environment';
+import { MatFabMenuModule } from '@angular-material-extensions/fab-menu';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { GraficosComponent } from './graficos/graficos.component';
+import { PdfMakeWrapper } from 'pdfmake-wrapper';
+import * as pdfFonts from "pdfmake/build/vfs_fonts";
+import { ColorRandomDirective } from './directivas/color-random.directive';
+import { ColorPorUsuarioDirective } from './directivas/color-por-usuario.directive';
+import { TipoDeLetraDirective } from './directivas/tipo-de-letra.directive';
+import { CaptchaDirective } from './directivas/captcha.directive';
+import { CaptchaComponent } from './componentes/captcha/captcha.component';
+import { UtilidadesModule } from './modules/utilidades/utilidades.module';
 
+PdfMakeWrapper.setFonts(pdfFonts);
 
 @NgModule({
   declarations: [
@@ -21,16 +33,25 @@ import { VerificacionRegistroComponent } from './pages/verificacion-registro/ver
     LoginComponent,
     RegistroComponent,
     NavBarComponent,
-    VerificacionRegistroComponent
+    VerificacionRegistroComponent,
+    GraficosComponent,
+    ColorRandomDirective,
+    ColorPorUsuarioDirective,
+    TipoDeLetraDirective,
+    CaptchaDirective
   ],
   imports: [
-    BrowserModule,
+    BrowserModule, 
     AppRoutingModule,
     AngularFireModule.initializeApp(environment.firebaseConfig),
     AngularFireAuthModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    MatFabMenuModule,
+    BrowserAnimationsModule,
+    UtilidadesModule
   ],
+  exports: [],
   providers: [],
   bootstrap: [AppComponent]
 })

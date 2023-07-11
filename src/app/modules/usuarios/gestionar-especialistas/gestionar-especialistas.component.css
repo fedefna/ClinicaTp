@@ -1,0 +1,19 @@
+
+.btnHabilitar{
+    BACKGROUND-COLOR: rgb(0, 80, 36);
+}
+.btnDeshabilitar{
+    BACKGROUND-COLOR: rgb(189, 10, 10);
+}
+
+.contenedor{
+    background-color: rgba(255, 255, 255, 0.616);
+    height: auto;
+    top:5px;
+    right: 15px;
+    position: relative;
+    border-color: rgb(56, 62, 68);
+    border-width: 5px;
+    border-style: solid;
+    border-radius: 10px;
+}

@@ -1,0 +1,28 @@
+.imagenContainer{
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: center;
+}
+  
+img{
+    height: 300px;
+}
+
+.contenedor{
+    background-color: rgba(255, 255, 255, 0.616);
+    height: auto;
+    top:5px;
+    border-color: rgb(56, 62, 68);
+    border-width: 5px;
+    border-style: solid;
+    border-radius: 10px;
+}
+
+#background{
+    width: 100%;
+    height: 95vh;
+    background-image: url('src\assets\background.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+}
