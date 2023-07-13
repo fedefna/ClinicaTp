@@ -55,6 +55,7 @@ export class NavBarComponent implements OnInit {
       } else {
         this.estaLogeado = false;
         this.esAdmin = false;
+        this.esEspecialista = false;
         console.log('this.estaLogeado ',this.estaLogeado,' this.esAdmin ',this.esAdmin);
       }
     });
@@ -145,9 +146,11 @@ export class NavBarComponent implements OnInit {
     this.usuarioLogueado = this.usuariosService.usuarioSeleccionado;
     if (this.usuarioLogueado.role === 'admin') {
       this.esAdmin = true;
+      this.esEspecialista = false;
       console.log('User logeado es admin-> ', this.usuarioLogueado);
     }else if(this.usuarioLogueado.role === 'especialista') {
       this.esEspecialista = true;
+      this.esAdmin=false;
       console.log('User logeado es especialista-> ', this.usuarioLogueado);
     }
   }

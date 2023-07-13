@@ -20,7 +20,7 @@ export class PacientesComponent implements OnInit {
   ngOnInit(): void {
     if(this.usuarioService.usuarioSeleccionado.id){
       this.historialService.obtenerHistoriasDelEspecialista(this.usuarioService.usuarioSeleccionado.id);
-      this.listaDeHistoriales = this.historialService.listaDeHistorialesPorPaciente;
+      this.listaDeHistoriales = this.historialService.listaDeHistorialesPorEspecialista;
     }
   }
 

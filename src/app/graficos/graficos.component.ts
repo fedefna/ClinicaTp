@@ -43,11 +43,12 @@ export class GraficosComponent implements OnInit {
       this.graficoTurnos();
       this.contarTurnosPorDia();
     });
-    this.usuarioService.traerLogs('logeoId').subscribe(
-      resp => {
-        console.log('Forma vieja recibe: ',resp);
-        this.listaLogeos = resp;
-      });
+    this.logs$=this.usuarioService.getLogs();
+    // this.usuarioService.traerLogs('logeoId').subscribe(
+    //   resp => {
+    //     console.log('Forma vieja recibe: ',resp);
+    //     this.listaLogeos = resp;
+    //   });
   }
 
   ngOnInit(): void {
@@ -91,10 +92,15 @@ export class GraficosComponent implements OnInit {
 
     for (let i = 0; i < this.listaTurnos.length; i++) {
       let date = this.listaTurnos[i].fecha;
+      console.log('this.listaTurnos[i].estado ',this.listaTurnos[i].estado)
+      console.log('Primer date sin magia date ',date)
       const [day, month, year] = date.split('/');
       date = new Date(+year, +month - 1, +day);
+      console.log('Segundo date ',date)
+      console.log('fechaLimite',fechaLimite)
+      console.log('fechaActual ',fechaActual)
       if (date >= fechaLimite && date <= fechaActual) {
-        if (this.listaTurnos[i].estado == 'realizado') {
+        if (this.listaTurnos[i].estado == 'Realizado') {
           this.totalTurnosFinalizados++;
           this.totalTurnosSolicitados++;
           console.log('Suma Finalizado y Solicitados')

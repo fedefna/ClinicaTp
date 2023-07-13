@@ -231,7 +231,8 @@ export class UsuariosService {
   }
   
   getLogs(): Observable<any[]> {
-    return this.db.collection('LogIngresos', ref => ref.orderBy('fecha', 'desc').limit(7)).valueChanges();
+    return this.db.collection('Logs', ref => ref.orderBy('fecha', 'desc').limit(7)).valueChanges();
+    // return this.db.collection('LogIngresos', ref => ref.orderBy('fecha', 'desc').limit(7)).valueChanges();
   }
 
 }

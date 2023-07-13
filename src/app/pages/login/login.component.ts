@@ -243,7 +243,7 @@ export class LoginComponent implements OnInit {
       idUsuario: this.usuarioLogueado.id,
       tipoUsuario: this.usuarioLogueado.role
     }
-    this.usuarioService.agregarLogIngreso("LogIngresos", datos);
+    this.usuarioService.agregarLogIngreso("Logs", datos);
   }
 
 
