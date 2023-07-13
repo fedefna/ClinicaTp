@@ -8,6 +8,7 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MisTurnosComponent } from './mis-turnos/mis-turnos.component';
 import { TurnosAdminComponent } from './turnos-admin/turnos-admin.component';
+import { PacientesComponent } from './pacientes/pacientes.component';
 
 
 const routes: Routes = [{
@@ -17,6 +18,7 @@ const routes: Routes = [{
     { path: "solicitar-turno", component: SolicitarTurnoComponent},
     { path: "mis-turnos", component: MisTurnosComponent},
     { path: "turnos-admin", component: TurnosAdminComponent},
+    { path: "mis-pacientes", component: PacientesComponent},
     { path: "**", redirectTo: "perfil-turno"}
   ]
 }];

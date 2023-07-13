@@ -1,5 +1,5 @@
 <div class="contenedor">
-  <form [formGroup]="formHistoriaClinica" (ngSubmit)="cargarHistoria()">
+  <form *ngIf="!soloMostrar" [formGroup]="formHistoriaClinica" (ngSubmit)="cargarHistoria()">
     <h1>Completar historia clinica</h1>
     <div>
       <label for="altura" class="label">Altura:</label><br>
@@ -73,11 +73,26 @@
       </datalist>
     </div>
     <div class="group">
-      <input type="submit" class="btnAgregar" value="Agregar" [disabled]="formHistoriaClinica.invalid">
+      <input *ngIf="!soloMostrar" type="submit" class="btnAgregar" value="Agregar" [disabled]="formHistoriaClinica.invalid">
+      <button *ngIf="soloMostrar" (click)="cerrarForm()">Cerrar</button>
     </div>
   </form>
   <div *ngIf="mostrarError" class="errorComentario">
     <label>Debe ingresar los 3 datos</label><br>
     <button (click)="cerrarError()" class="botonOk">Ok</button>
+  </div>
+
+  <div *ngIf="soloMostrar">
+    <h1>Historia clinica:</h1>
+    <div>
+      <label class="label">Atencion:</label><br>
+      <label class="label">Medico: {{mostrarEspecialista}}. Especialidad: {{mostrarEspecialidad}}. Fecha: {{mostrarFecha}}. Hora: {{mostrarHora}}.</label><br>
+      <label class="label">Datos cargados:</label><br>
+      <label class="label">Altura: {{mostrarAltura}}. Temperatura: {{mostrarTemperatura}}. Peso: {{mostrarPeso}}. Presion: {{mostrarPresion}}. </label><br>
+
+    <div class="group">
+      <input *ngIf="!soloMostrar" type="submit" class="btnAgregar" value="Agregar" [disabled]="formHistoriaClinica.invalid">
+      <button *ngIf="soloMostrar" (click)="cerrarForm()">Cerrar</button>
+    </div>
   </div>
 </div>

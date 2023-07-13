@@ -3,6 +3,7 @@ import { Observable } from 'rxjs';
 import { User } from 'src/app/Clases/user';
 import { ExcelService } from 'src/app/services/excel.service';
 import { UsuariosService } from 'src/app/services/usuarios.service';
+import { UtilidadesService } from 'src/app/services/utilidades.service';
 
 @Component({
   selector: 'app-gestionar-especialistas',
@@ -14,8 +15,10 @@ export class GestionarEspecialistasComponent implements OnInit {
   users$: Observable<User[]>;
   user?: User;
   listaDeExcel:User[] = [];
+  captcha: boolean = false;
+  utilidades:any={};
 
-  constructor(private usuariosServ: UsuariosService,private excelService:ExcelService) {
+  constructor(private usuariosServ: UsuariosService,private excelService:ExcelService,private utils: UtilidadesService) {
     this.users$ = this.usuariosServ.usuariosRef.valueChanges();
     this.usuariosServ.usuariosRef.valueChanges().subscribe((data: any) => {
       this.listaDeExcel = [];
@@ -46,8 +49,12 @@ export class GestionarEspecialistasComponent implements OnInit {
       });
     });
   }
-
+  
   ngOnInit(): void {
+    this.utils.captcha$.subscribe(captcha=>{
+      console.log('captcha recibido: ',captcha);
+      this.captcha = captcha;
+    });
   }
 
   habilitarEspecialista(user: User) {
@@ -64,6 +71,16 @@ export class GestionarEspecialistasComponent implements OnInit {
 
   descargarExcel() {
     this.excelService.descargarExcelUsuarios(this.listaDeExcel, 'Lista Usuarios');
+  }
+
+  cambiarCaptcha(){
+    if(this.captcha){
+      this.utilidades.captcha = false; 
+    }else{
+      this.utilidades.captcha = true; 
+    }
+    this.utils.actualizarCaptcha(this.utilidades);
+
   }
 
 }

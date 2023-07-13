@@ -1,7 +1,11 @@
 import { JsonPipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
+import { Historial } from 'src/app/Clases/historial';
 import { Hora } from 'src/app/Clases/hora';
+import { HistoriaClinicaService } from 'src/app/services/historia-clinica.service';
+import { TurnoService } from 'src/app/services/turno.service';
 import { UsuariosService } from 'src/app/services/usuarios.service';
+import { Turno } from '../../../Clases/turno';
 
 @Component({
   selector: 'app-perfil-turno',
@@ -25,8 +29,12 @@ export class PerfilTurnoComponent implements OnInit {
   horario?: any;
   especialidadSeleccionada = "Libre";
   flagEditar = false;
+  mostrarFormHistoriaClinica: boolean = false;
+  turnoSeleccionado!: Turno;
+  listaDeHistoriales:Historial[]=[];
+  historialParaMostrar!:Historial;
 
-  constructor(private usuarioService: UsuariosService) {
+  constructor(private usuarioService: UsuariosService, private turnoService: TurnoService, private historialService : HistoriaClinicaService) {
     this.nombre = this.usuarioService.usuarioSeleccionado?.nombre;
     this.apellido = this.usuarioService.usuarioSeleccionado?.apellido;
     this.fechaNaciemiento = this.usuarioService.usuarioSeleccionado?.fechaNaciemiento;
@@ -51,6 +59,10 @@ export class PerfilTurnoComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    if(this.usuarioService.usuarioSeleccionado.id){
+      this.historialService.obtenerHistorialDelPaciente(this.usuarioService.usuarioSeleccionado.id);
+      this.listaDeHistoriales = this.historialService.listaDeHistorialesPorPaciente;
+    }
   }
 
   seleccionarEspecialidad(especialidad: string) {
@@ -102,6 +114,18 @@ export class PerfilTurnoComponent implements OnInit {
   
   editarHorarios() {
     this.flagEditar=true;  
+  }
+
+  async verHistorial(historial:Historial) {
+    this.mostrarFormHistoriaClinica = true;
+    this.historialParaMostrar = historial;
+    await this.turnoService.getTurnoById(historial.turnoId);
+    this.turnoSeleccionado=this.turnoService.turnoById;
+    console.log('this.turnoSeleccionado ',this.turnoSeleccionado)
+  }
+
+  cerrarVentanaHistoriaClinica(e:any){
+    this.mostrarFormHistoriaClinica = e;
   }
 
 }

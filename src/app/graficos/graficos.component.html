@@ -40,7 +40,7 @@
                 </tr>
             </thead>
      
-            <tbody class="tCuerpo" *ngFor="let logeo of listaLogeos" >
+            <tbody class="tCuerpo" *ngFor="let logeo of logs$ | async" >
                 <tr [appColorPorUsuario]="logeo.tipoUsuario">
                     <td appTipoDeLetra>{{logeo.usuario | titlecase}}</td>
                     <td>{{logeo.email | lowercase}}</td>

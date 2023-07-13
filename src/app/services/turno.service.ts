@@ -10,6 +10,7 @@ export class TurnoService {
   referenciaAlaColeccion: AngularFirestoreCollection<Turno>;
   listaDeTurnosPorEspecialista:Turno[]=[];
   listaDeTurnosPorPaciente:Turno[]=[];
+  turnoById!:Turno;
 
   constructor(private db: AngularFirestore) {
     this.referenciaAlaColeccion=db.collection('/turnos');
@@ -46,6 +47,15 @@ export class TurnoService {
 
   guardarCambios(turno: Turno) {
     this.db.collection('turnos').doc(turno.id).set(turno);
+  }
+  
+  async getTurnoById(turnoId:string){
+    await this.db.collection<Turno>('turnos').ref.where('id', '==',turnoId).get().then((response)=>{
+      console.log(response.docs[0]);
+      console.log(response.docs[0].data());
+      this.turnoById=response.docs[0].data();
+    })
+    return this.turnoById;
   }
 
 }

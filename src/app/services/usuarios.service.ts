@@ -14,6 +14,7 @@ import { Hora } from '../Clases/hora';
 export class UsuariosService {
 
   private dbpathUsuarios = '/usuarios';
+  private dbpathLogs = '/LogIngresos';
   usuariosRef: AngularFirestoreCollection<User>;
   usuarios$: Observable<any[]>;
   especialidad?: Especialidades;
@@ -23,29 +24,43 @@ export class UsuariosService {
   role?: string;
   public usuarioSeleccionado: User = new User();
   usuario?: User;
+  // listaLogs$: Observable<any>;
 
   constructor(private db: AngularFirestore,
     private storage: AngularFireStorage,
     public firebaseAuth: AuthService) {
 
-    this.usuariosRef = db.collection<User>(this.dbpathUsuarios, ref => ref.orderBy('apellido'));
-    this.usuarios$ = this.usuariosRef.valueChanges(this.dbpathUsuarios);
-    console.log('asd')
+      this.usuariosRef = db.collection<User>(this.dbpathUsuarios, ref => ref.orderBy('apellido'));
+      this.usuarios$ = this.usuariosRef.valueChanges(this.dbpathUsuarios);
+      console.log('this.usuariosRef ',this.usuariosRef)
+      console.log('this.usuarios$ ',this.usuarios$)
+      // this.listaLogs$ = this.usuariosRef.doc(this.dbpathLogs).snapshotChanges().pipe(
+      //   map((snapshot)=>{
+      //     console.log('Se modifico el documento utilidades: ',snapshot.payload.data());
+      //     const data = snapshot.payload.data();
+      //     return data.idioma;
+      //   })
+      // );
   }
 
   async obtenerID(email: string) {
+    console.log('obtenerID ');
     await this.db.collection('/usuarios').ref.where('email', '==', email).get().then((responce) => {
+      console.log('Dentro de obtenerId ');
       this.id = responce.docs[0].id;
     });
   }
 
   async obtenerRole(email: string) {
+    console.log('obtenerRole ');
     await this.db.collection('/usuarios').ref.where('email', '==', email).get().then((responce: any) => {
+      console.log('dentro de obtenerRole ');
       this.role = responce.docs[0].data()['role'];
     });
   }
 
   async obtenerUsuario(email: string) {
+    console.log('obtenerUsuario ');
     await this.db.collection('/usuarios').ref.where('email', '==', email).get().then((responce: any) => {
       if (responce.docs.length === 0) {
         console.log('No hay usuario registrado con ese email: ', email);
@@ -58,12 +73,14 @@ export class UsuariosService {
     });
   }
 
-  obtenerUsuariosSegunEspecialidad(array: User[] = [],especialidad: string) {
+  obtenerUsuariosSegunEspecialidad(array: User[] = [], especialidad: string) {
+    console.log('obtenerUsuariosSegunEspecialidad ');
     this.usuarios$.pipe(take(1)).subscribe(list => {
+      console.log('dentro de obtenerUsuariosSegunEspecialidad ');
       list.forEach(user => {
         if (user.especialidades) {
           user.especialidades.forEach((espec: string) => {
-            console.log('user: ', user.nombre,'especialidad: ',especialidad,' a comparar con: ',espec);
+            console.log('user: ', user.nombre, 'especialidad: ', especialidad, ' a comparar con: ', espec);
             if (espec === especialidad) {
               array.push(user)
             }
@@ -76,10 +93,12 @@ export class UsuariosService {
 
 
   getAll() {
+    console.log('getAll ');
     return this.usuarios$;
   }
 
   nuevoUsuarioEspecialista(usuario: any, foto: File) {
+    console.log('nuevoUsuarioEspecialista ');
     usuario.id = this.db.createId();
     usuario.emailVerificado = false;
     let horarios = this.crearHorario()
@@ -94,6 +113,7 @@ export class UsuariosService {
     task.snapshotChanges().pipe(
       finalize(() => {
         fileRef.getDownloadURL().subscribe(async res => {
+          console.log('dentro de nuevoUsuarioEspecialista ');
           usuario.imagenEspecialista = res;
           this.db.collection('usuarios').doc(usuario.id).set(usuario);
         });
@@ -131,6 +151,7 @@ export class UsuariosService {
   }
 
   nuevoUsuarioAdmin(usuario: User, foto: File) {
+    console.log('nuevoUsuarioAdmin ');
     usuario.id = this.db.createId();
     usuario.emailVerificado = false;
 
@@ -193,17 +214,24 @@ export class UsuariosService {
   }
 
   async traerEspecialidades() {
+    console.log('traerEspecialidades ');
     await this.db.collection('/especialidades').ref.get().then((responce: any) => {
       return responce.docs[0].data();
     });
   }
 
-  agregarLogIngreso(coleccion:string,datos:any){
+  agregarLogIngreso(coleccion: string, datos: any) {
+    console.log('agregarLogIngreso ');
     this.db.collection(coleccion).add(datos);
   }
 
-  traerLogs(nombreIdField:string){
+  traerLogs(nombreIdField: string) {
+    console.log('traerLogs ');
     return this.db.collection('LogIngresos').valueChanges({ idField: nombreIdField });
+  }
+  
+  getLogs(): Observable<any[]> {
+    return this.db.collection('LogIngresos', ref => ref.orderBy('fecha', 'desc').limit(7)).valueChanges();
   }
 
 }

@@ -8,7 +8,7 @@ body
     background-image: url('src\assets\background.jpg');
     background-repeat: no-repeat;
     background-size: cover;
-
+    align-content: stretch;
     width: 100%;
     height: 95vh;
     background-position: center;
@@ -16,6 +16,7 @@ body
 
 .contenedorBotonPDF{
     position: absolute;
+    /* position: flex; */
     width: 340px;
     background-color: rgba(255, 255, 255, 0.616);
     height: auto;
@@ -45,9 +46,11 @@ body
 
 .contenedorCantEspecialidades{
     position: absolute;
-    width: 400px;
+    /* position: flex; */
+    width: 600px;
     background-color: rgba(255, 255, 255, 0.616);
     height: 355px;
+    /* height: auto; */
     top:9%;
     left:34%;
     border-color: rgb(56, 62, 68);
@@ -60,6 +63,7 @@ body
 
 .contenedorGraficos{
     position: absolute;
+    /* position: flex; */
     border-color: rgb(56, 62, 68);
     border-width: 5px;
     border-style: solid;
@@ -74,12 +78,13 @@ body
 
 .contenedorCantDia{
     position: absolute;
+    /* position: flex; */
     width: 280px;
     background-color: rgba(255, 255, 255, 0.616);
     height: auto;
     min-height: 355px;
     top:9%;
-    left:56%;
+    left:67%;
     border-color: rgb(56, 62, 68);
     border-width: 5px;
     border-style: solid;
@@ -88,6 +93,7 @@ body
 
 .contenedorLogeos{
     position: absolute;
+    /* position: flex; */
     width: 900px;
     background-color: rgba(255, 255, 255, 0.616);
     height: 450px;

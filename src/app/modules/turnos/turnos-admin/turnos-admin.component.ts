@@ -6,6 +6,7 @@ import { Turno } from 'src/app/Clases/turno';
 import { User } from 'src/app/Clases/user';
 import { TurnoService } from 'src/app/services/turno.service';
 import { UsuariosService } from 'src/app/services/usuarios.service';
+import { UtilidadesService } from 'src/app/services/utilidades.service';
 
 @Component({
   selector: 'app-turnos-admin',
@@ -28,8 +29,23 @@ export class TurnosAdminComponent implements OnInit {
   turnoSeleccionado!: Turno;
   cancelar = false;
   comentarioCancelar: string = '';
+  idiomaSeleccionado: string = 'esp';
 
-  constructor(private turnoService: TurnoService, private usuarioService: UsuariosService) {
+  columnaEspecialidad='Especialidad';
+  columnaEspecialista='Especialista';
+  columnaPaciente='Paciente';
+  columnaFecha='Fecha';
+  columnaHora='Hora';
+  columnaEstado='Estado';
+  columnaAcciones='Acciones';
+  labelFiltro='...filtro';
+  botonCancelar='Cancelar';
+  sinTurnos='No hay turnos..';
+  labelIngresarComentario='Ingrese un comentario para cancelar el turno:';
+  botonEnviarComentario='Enviar comentario';
+  turnoTitulo='Turnos';
+
+  constructor(private turnoService: TurnoService, private usuarioService: UsuariosService, private utils: UtilidadesService) {
     if (this.usuarioService.id) {
       this.turnoService.obtenerTurnosDelPaciente(this.usuarioService.id);
     }
@@ -59,9 +75,64 @@ export class TurnosAdminComponent implements OnInit {
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
     });
+    this.actualizarIdioma();
+    this.utils.idioma$.subscribe(idioma=>{
+      this.idiomaSeleccionado = idioma;
+      this.actualizarIdioma();
+    });
   }
 
   ngOnInit(): void {
+  }
+
+  actualizarIdioma() {
+    if (this.idiomaSeleccionado === 'esp') {
+      this.columnaEspecialidad = 'Especialidad';
+      this.columnaEspecialista='Especialista';
+      this.columnaPaciente='Paciente';
+      this.columnaFecha='Fecha';
+      this.columnaHora='Hora';
+      this.columnaEstado='Estado';
+      this.columnaAcciones='Acciones';
+      this.labelFiltro='...filtro';
+      this.botonCancelar='Cancelar';
+      this.sinTurnos='No hay turnos..';
+      this.labelIngresarComentario='Ingrese un comentario para cancelar el turno:';
+      this.botonEnviarComentario='Enviar comentario';
+      this.turnoTitulo='Turnos';
+    } else {
+      if (this.idiomaSeleccionado === 'ing') {
+        this.columnaEspecialidad = 'Specialty';
+        this.columnaEspecialista='Specialist';
+        this.columnaPaciente='Patient';
+        this.columnaFecha='Date';
+        this.columnaHora='Hour';
+        this.columnaEstado='State';
+        this.columnaAcciones='Actions';
+        this.labelFiltro='...filter';
+        this.botonCancelar='Cancel';
+        this.sinTurnos='No shifts..';
+        this.labelIngresarComentario='Enter a comment to cancel the turn:';
+        this.botonEnviarComentario='Send comment';
+        this.turnoTitulo='Shifts';
+      } else {
+        if (this.idiomaSeleccionado === 'por') {
+          this.columnaEspecialidad = 'Especialidade';
+          this.columnaEspecialista='Especialista';
+          this.columnaPaciente='Paciente';
+          this.columnaFecha='Data';
+          this.columnaHora='Hora';
+          this.columnaEstado='Estado';
+          this.columnaAcciones='Ações';
+          this.labelFiltro='...filtro';
+          this.botonCancelar='Cancelar';
+          this.sinTurnos='Sem turnos..';
+          this.labelIngresarComentario='Insira um comentário para cancelar a vez:';
+          this.botonEnviarComentario='Enviar comentário';
+          this.turnoTitulo='mudança';
+        }
+      }
+    }
   }
 
   ngAfterViewInit() {

@@ -25,11 +25,11 @@
                         {{turnos}}
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <li><a class="dropdown-item" *ngIf="!esAdmin" (click)="navergar('turnos/mis-turnos')">navegar a turnos/mis-turnos</a></li>
+                        <li><a class="dropdown-item" *ngIf="!esAdmin" (click)="navergar('turnos/mis-turnos')">{{misTurnos}}</a></li>
                         <li><a class="dropdown-item" (click)="navergar('turnos/perfil-turno')">{{perfil}}</a></li>
-                        <li><a class="dropdown-item" (click)="navergar('turnos/solicitar-turno')">{{solicitarTurno}}</a>
-                        </li>
+                        <li><a class="dropdown-item" (click)="navergar('turnos/solicitar-turno')">{{solicitarTurno}}</a></li>
                         <li><a class="dropdown-item" *ngIf="esAdmin" (click)="navergar('turnos/turnos-admin')">{{turnosAdmin}}</a></li>
+                        <li><a class="dropdown-item" *ngIf="esEspecialista" (click)="navergar('turnos/mis-pacientes')">{{misPacientes}}</a></li>
                     </ul>
                 </li>
             </ul>

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Chart, registerables } from 'chart.js';
+import { Observable } from 'rxjs';
 import { ExcelService } from '../services/excel.service';
 import { PdfServiceService } from '../services/pdf-service.service';
 import { TurnoService } from '../services/turno.service';
@@ -26,6 +27,10 @@ export class GraficosComponent implements OnInit {
   totalTurnosSolicitados: number = 0;
   turnosPorDia: number = 0;
   myChart: any;
+  logs$?: Observable<any[]>;
+
+
+
   constructor(public turnoService: TurnoService, public pdfService: PdfServiceService, public excelService: ExcelService, private usuarioService: UsuariosService) {
     this.listaTurnos = [];
     this.listaEspecialidades = [];
@@ -40,12 +45,13 @@ export class GraficosComponent implements OnInit {
     });
     this.usuarioService.traerLogs('logeoId').subscribe(
       resp => {
+        console.log('Forma vieja recibe: ',resp);
         this.listaLogeos = resp;
       });
   }
 
   ngOnInit(): void {
-
+    this.logs$=this.usuarioService.getLogs();
   }
 
 

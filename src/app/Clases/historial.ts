@@ -11,11 +11,12 @@ export class Historial {
     peso:string;
     temperatura:string;
     presion:string;
+    turnoId:string;
     comentarios:any = [];
     
     
     constructor(pacienteId: string,especialistaId: string,fecha: string,hora:string,especialidad:string, paciente: string,especialista: string
-        ,altura: string,peso: string,temperatura: string,presion: string,comentarios: any){
+        ,altura: string,peso: string,temperatura: string,presion: string,turnoId: string,comentarios: any){
         this.pacienteId=pacienteId;
         this.especialistaId=especialistaId;
         this.paciente=paciente;
@@ -28,6 +29,7 @@ export class Historial {
         this.peso=peso+ " kg";
         this.temperatura=temperatura+ "°";
         this.presion=presion;
+        this.turnoId=turnoId;
         this.comentarios=comentarios;
     }
 }

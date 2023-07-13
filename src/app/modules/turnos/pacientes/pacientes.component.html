@@ -1,0 +1,35 @@
+<div id="background">
+    <div class="container">
+        <h1>Historias clinicas de mis pacientes:</h1>
+        
+        <div class="col-sm-6 contenedor">
+            <div>
+                <table class="table table-hover">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th scope="col">Paciente</th>
+                            <th scope="col">Especialidad</th>
+                            <th scope="col">Especialista</th>
+                            <th scope="col">Fecha</th>
+                            <th scope="col">Ver</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let historial of listaDeHistoriales">
+                            <td>{{historial.paciente}}</td>
+                            <td>{{historial.especialidad}}</td>
+                            <td>{{historial.especialista}}</td>
+                            <td>{{historial.fecha}}</td>
+                            <td><button *ngIf="historial.id" (click)="verHistorial(historial)">Ver</button></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="contenedor" *ngIf="mostrarFormHistoriaClinica">
+            <app-historia-clinica [soloMostrar]="true" [historialParaMostrar]="historialParaMostrar"
+                (cerrarVentana)="cerrarVentanaHistoriaClinica($event)"></app-historia-clinica>
+        </div>
+    </div>
+</div>

@@ -23,12 +23,13 @@ export class LoginComponent implements OnInit {
   mostrar = false;
   usuarioLogueado = new User();
   idiomaSeleccionado: string = '';
-  idiomaParaMostrar: string = '';
-  email: string = 'Email';
-  iniciarSesion: string = '';
+  // email: string = 'Email';
+  correo: string = 'Correo';
+  contra: string = 'Contraseña';
+  iniciarSesion: string = 'Iniciar Sesion';
   password: string = 'Contraseña';
-  errorCaptchaTraducido: string = '';
-  ingresar: string = '';
+  errorCaptchaTraducido: string = 'Debe realizar el captcha';
+  ingresar: string = 'Ingresar';
 
   fabButtonsRandom: MatFabMenu[] = [
     {
@@ -76,30 +77,38 @@ export class LoginComponent implements OnInit {
 
 
   constructor(public firebaseService: AuthService, private router: Router, private usuarioService: UsuariosService, private utilidadesService: UtilidadesService, private utils: UtilidadesService) {
-    this.utilidadesService.traerTodasLasUtilidades().valueChanges().subscribe((data: any) => {
+    // this.utilidadesService.traerTodasLasUtilidades().valueChanges().subscribe((data: any) => {
 
-      data.forEach((utilidades: any) => {
-        if (utilidades.captcha == true) {
-          this.captchaUtilidades = true;
-        } else {
-          this.captchaUtilidades = false;
-        }
-      }
-      )
-    });
-    this.utils.traerTodasLasUtilidades().valueChanges().subscribe((data: any) => {
-      data.forEach((utilidades: any) => {
-        if (utilidades.idioma) { 
-          this.idiomaSeleccionado = utilidades.idioma;
-          // this.actualizarIdioma();
-        }
-      }
-      )
-    });
+    //   data.forEach((utilidades: any) => {
+    //     if (utilidades.captcha == true) {
+    //       this.captchaUtilidades = true;
+    //     } else {
+    //       this.captchaUtilidades = false;
+    //     }
+    //   }
+    //   )
+    // });
+    // this.utils.traerTodasLasUtilidades().valueChanges().subscribe((data: any) => {
+    //   data.forEach((utilidades: any) => {
+    //     if (utilidades.idioma) { 
+    //       this.idiomaSeleccionado = utilidades.idioma;
+    //       // this.actualizarIdioma();
+    //     }
+    //   }
+    //   )
+    // });
   }
 
   ngOnInit() {
-
+    this.utils.idioma$.subscribe(idioma=>{
+      console.log('idioma recibido: ',idioma);
+      this.idiomaSeleccionado = idioma;
+      this.actualizarIdioma();
+    });
+    this.utils.captcha$.subscribe(captcha=>{
+      console.log('captcha recibido: ',captcha);
+      this.captchaUtilidades = captcha;
+    });
   }
 
   async OnSignIn(email: string, password: string) {
@@ -243,30 +252,26 @@ export class LoginComponent implements OnInit {
   }
 
   actualizarIdioma() {
-    console.log("Actualizar idioma this.idiomaSeleccionado "+this.idiomaSeleccionado)
     if (this.idiomaSeleccionado === 'esp') {
-      this.idiomaParaMostrar = 'Idioma: Español';
-      this.email = 'Correo';
+      this.correo = 'Correo';
       this.iniciarSesion = 'Iniciar Sesion';
-      this.password = 'Contraseña';
+      this.contra = 'Contraseña';
       this.errorCaptchaTraducido = 'Debe realizar el captcha';
       this.ingresar = 'Ingresar';
     } else {
       if (this.idiomaSeleccionado === 'por') {
-        this.idiomaParaMostrar = 'Idioma: Portugues';
-        this.email = 'o email';
+        this.correo = 'o email';
         this.iniciarSesion = 'Iniciar sessão';
-        this.password = 'senha';
+        this.contra = 'senha';
         this.errorCaptchaTraducido = 'Você deve fazer o captcha';
         this.ingresar = 'Entrar';
       } else {
         if (this.idiomaSeleccionado === 'ing') {
-          this.idiomaParaMostrar = 'Lenguage: English';
-          this.email = 'Email';
+          this.correo = 'Email';
           this.iniciarSesion = 'Log In';
-          this.password = 'Estadisticas';
+          this.contra = 'Password';
           this.errorCaptchaTraducido = 'You must do the captcha';
-          this.ingresar = 'Log In';
+          this.ingresar = 'Submit';
         }
       }
     }

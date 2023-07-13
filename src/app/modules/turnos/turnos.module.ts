@@ -16,6 +16,7 @@ import { HistoriaClinicaComponent } from './historia-clinica/historia-clinica.co
 import { CaptchaComponent } from 'src/app/componentes/captcha/captcha.component';
 import { AppModule } from 'src/app/app.module';
 import { UtilidadesModule } from '../utilidades/utilidades.module';
+import { PacientesComponent } from './pacientes/pacientes.component';
 
 
 @NgModule({
@@ -24,7 +25,8 @@ import { UtilidadesModule } from '../utilidades/utilidades.module';
     TurnosAdminComponent,
     SolicitarTurnoComponent,
     PerfilTurnoComponent,
-    HistoriaClinicaComponent
+    HistoriaClinicaComponent,
+    PacientesComponent
   ],
   imports: [
     CommonModule,

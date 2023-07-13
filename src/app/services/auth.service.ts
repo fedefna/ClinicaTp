@@ -16,6 +16,7 @@ export class AuthService {
   isLoggedIn = false;
 
   constructor(public firebaseAuth: AngularFireAuth, private afs: AngularFirestore) {
+    console.log('Constructor del servicio Auth...');
     this.user = this.firebaseAuth.authState.pipe(
       switchMap((user) => {
         if (user) {
@@ -29,6 +30,7 @@ export class AuthService {
   }
 
   async SignIn(email: string, password: string) {
+    console.log('MEtodo SignIn del servicio Auth.');
     try {
       const { user } = await this.firebaseAuth.signInWithEmailAndPassword(
         email,
@@ -95,6 +97,7 @@ export class AuthService {
   }
 
   public async verificarPerfilAdmin(): Promise<boolean> {
+    console.log('verificarPerfilAdmin ');
     const user = JSON.parse(localStorage.getItem('user') || '{}');
     if (user && user.uid) {
       const userDoc = await this.afs.doc<User>(`users/${user.uid}`).get().toPromise();
